@@ -5,17 +5,17 @@ import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
 
 const Header = async () => {
-
   return (
     <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
       <nav className="container mx-auto flex items-center justify-between px-4 py-4">
         <Link href="/">
           <Image
-            src={"/logo2.png"}
+            src={"/logo3.webp"}
             alt="Welth Logo"
             width={200}
             height={60}
             className="h-12 w-auto object-contain"
+            loading="eager"
           />
         </Link>
 
