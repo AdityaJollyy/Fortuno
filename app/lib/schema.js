@@ -1,10 +1,12 @@
 import { z } from "zod";
 
-const moneyString = z
-  .string()
-  .min(1, "Required")
-  .regex(/^\d+(\.\d{1,2})?$/, "Enter a valid amount (up to 2 decimals)")
-  .refine((value) => Number(value) > 0, "Amount must be greater than 0");
+const MONEY_REGEX = /^\d+(\.\d{1,2})?$/;
+
+const moneyString = (label) =>
+  z
+    .string()
+    .min(1, `${label} is required`)
+    .regex(MONEY_REGEX, "Enter a valid amount (up to 2 decimals)");
 
 export const accountSchema = z.object({
   name: z
@@ -13,17 +15,17 @@ export const accountSchema = z.object({
     .min(1, "Name is required")
     .max(50, "Name is too long"),
   type: z.enum(["CURRENT", "SAVINGS"]),
-  balance: z
-    .string()
-    .min(1, "Initial balance is required")
-    .regex(/^\d+(\.\d{1,2})?$/, "Enter a valid amount (up to 2 decimals)"),
+  balance: moneyString("Initial balance"),
   isDefault: z.boolean(),
 });
 
 export const transactionSchema = z
   .object({
     type: z.enum(["INCOME", "EXPENSE"]),
-    amount: moneyString,
+    amount: moneyString("Amount").refine(
+      (value) => Number(value) > 0,
+      "Amount must be greater than 0",
+    ),
     description: z.string().trim().max(200).optional(),
     date: z.date({ error: "Date is required" }),
     accountId: z.string().min(1, "Account is required"),
