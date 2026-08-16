@@ -3,8 +3,11 @@ import { PenBox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
 import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 import Image from "next/image";
+import { checkUser } from "@/lib/checkUser";
 
 const Header = async () => {
+  await checkUser(); // put in database if user doesn't exist yet, otherwise do nothing
+
   return (
     <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
       <nav className="container mx-auto flex items-center justify-between px-4 py-4">
