@@ -7,8 +7,13 @@ const nextConfig = {
         hostname: "randomuser.me",
         pathname: "/api/portraits/**",
       },
+      {
+        protocol: "https",
+        hostname: "img.clerk.com",
+      },
     ],
   },
+  serverExternalPackages: ["@prisma/client", "pg"],
 };
 
 export default nextConfig;
