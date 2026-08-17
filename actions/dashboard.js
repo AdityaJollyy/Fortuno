@@ -15,6 +15,11 @@ export async function getUserAccounts() {
     const accounts = await db.account.findMany({
       where: { userId: user.id },
       orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
+      include: {
+        _count: {
+          select: { transactions: true },
+        },
+      },
     });
 
     return ok(accounts.map(serializeAccount));

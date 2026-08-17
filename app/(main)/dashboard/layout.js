@@ -1,5 +1,5 @@
+import { SectionLoader } from "@/components/SectionLoader";
 import { Suspense } from "react";
-import { BarLoader } from "react-spinners";
 
 export default function DashboardLayout({ children }) {
   return (
@@ -9,11 +9,7 @@ export default function DashboardLayout({ children }) {
           Dashboard
         </h1>
       </div>
-      <Suspense
-        fallback={<BarLoader className="mt-4" width="100%" color="#9333ea" />}
-      >
-        {children}
-      </Suspense>
+      <Suspense fallback={<SectionLoader />}>{children}</Suspense>
     </div>
   );
 }

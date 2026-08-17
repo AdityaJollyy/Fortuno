@@ -6,6 +6,7 @@ import { unwrap } from "@/lib/action";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CreateAccountDrawer } from "@/components/CreateAccountDrawer";
+import { AccountCard } from "./_components/AccountCard";
 
 export default async function DashboardPage() {
   await auth.protect();
@@ -26,6 +27,10 @@ export default async function DashboardPage() {
             </CardContent>
           </Card>
         </CreateAccountDrawer>
+
+        {accounts.map((account) => (
+          <AccountCard key={account.id} account={account} />
+        ))}
       </div>
     </div>
   );
