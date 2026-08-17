@@ -3,6 +3,8 @@
 import { useState, useCallback } from "react";
 import { toast } from "sonner";
 
+// Runs a server action from a client component: tracks pending state and
+// toasts on failure. Returns the action's data, or undefined if it failed.
 export default function useFetch(action) {
   const [data, setData] = useState(undefined);
   const [loading, setLoading] = useState(false);
@@ -16,6 +18,12 @@ export default function useFetch(action) {
       try {
         const result = await action(...args);
 
+        if (!result || typeof result.success !== "boolean") {
+          throw new Error(
+            "Action must return ok() or fail() from lib/action.js",
+          );
+        }
+
         if (!result.success) {
           setError(result.error);
           toast.error(result.error);
@@ -25,7 +33,6 @@ export default function useFetch(action) {
         setData(result.data);
         return result.data;
       } catch (err) {
-        // Network failure, or the action threw instead of returning.
         console.error(err);
         const message = "Something went wrong. Please try again.";
         setError(message);

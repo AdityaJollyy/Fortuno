@@ -1,35 +1,26 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { auth } from "@clerk/nextjs/server";
 
 import { db } from "@/lib/prisma";
+import { requireUser } from "@/lib/auth";
+import { ok, fail } from "@/lib/action";
 import { serializeAccount } from "@/lib/serialize";
-import { ActionError, toErrorMessage } from "@/lib/action";
 import { accountSchema } from "@/app/lib/schema";
 
-async function requireUser() {
-  const { userId } = await auth();
-  if (!userId) throw new ActionError("Unauthorized");
-
-  const user = await db.user.findUnique({
-    where: { clerkUserId: userId },
-    select: { id: true },
-  });
-  if (!user) throw new ActionError("User not found");
-
-  return user;
-}
-
 export async function getUserAccounts() {
-  const user = await requireUser();
+  try {
+    const user = await requireUser();
 
-  const accounts = await db.account.findMany({
-    where: { userId: user.id },
-    orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
-  });
+    const accounts = await db.account.findMany({
+      where: { userId: user.id },
+      orderBy: [{ isDefault: "desc" }, { createdAt: "desc" }],
+    });
 
-  return accounts.map(serializeAccount);
+    return ok(accounts.map(serializeAccount));
+  } catch (error) {
+    return fail(error);
+  }
 }
 
 export async function createAccount(formData) {
@@ -64,8 +55,8 @@ export async function createAccount(formData) {
     });
 
     revalidatePath("/dashboard");
-    return { success: true, data: serializeAccount(account) };
+    return ok(serializeAccount(account));
   } catch (error) {
-    return { success: false, error: toErrorMessage(error) };
+    return fail(error);
   }
 }

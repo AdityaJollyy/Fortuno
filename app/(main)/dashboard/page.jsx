@@ -1,12 +1,16 @@
 import { Plus } from "lucide-react";
+import { auth } from "@clerk/nextjs/server";
 
 import { getUserAccounts } from "@/actions/dashboard";
+import { unwrap } from "@/lib/action";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { CreateAccountDrawer } from "@/components/CreateAccountDrawer";
 
 export default async function DashboardPage() {
-  const accounts = await getUserAccounts();
+  await auth.protect();
+
+  const accounts = unwrap(await getUserAccounts());
 
   return (
     <div className="space-y-8">
