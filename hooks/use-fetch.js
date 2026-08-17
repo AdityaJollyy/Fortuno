@@ -15,11 +15,21 @@ export default function useFetch(action) {
 
       try {
         const result = await action(...args);
-        setData(result);
-        return result;
+
+        if (!result.success) {
+          setError(result.error);
+          toast.error(result.error);
+          return undefined;
+        }
+
+        setData(result.data);
+        return result.data;
       } catch (err) {
-        setError(err);
-        toast.error(err.message || "Something went wrong");
+        // Network failure, or the action threw instead of returning.
+        console.error(err);
+        const message = "Something went wrong. Please try again.";
+        setError(message);
+        toast.error(message);
         return undefined;
       } finally {
         setLoading(false);

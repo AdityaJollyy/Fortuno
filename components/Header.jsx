@@ -14,7 +14,7 @@ const Header = async () => {
         <Link href="/">
           <Image
             src={"/logo.webp"}
-            alt="Welth Logo"
+            alt="Fortuno Logo"
             width={200}
             height={60}
             className="h-12 w-auto object-contain"
@@ -49,12 +49,12 @@ const Header = async () => {
                 <span className="hidden md:inline">Dashboard</span>
               </Button>
             </Link>
-            <a href="/transaction/create">
+            <Link href="/transaction/create">
               <Button className="flex items-center gap-2">
                 <PenBox size={18} />
                 <span className="hidden md:inline">Add Transaction</span>
               </Button>
-            </a>
+            </Link>
           </Show>
           <Show when="signed-out">
             <SignInButton forceRedirectUrl="/dashboard">
