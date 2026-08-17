@@ -49,3 +49,8 @@ export const transactionIdsSchema = z
   .array(z.uuid("Invalid transaction id"))
   .min(1, "Select at least one transaction")
   .max(500, "You can delete at most 500 transactions at a time");
+
+export const budgetAmountSchema = moneyString("Budget amount").refine(
+  (value) => Number(value) > 0,
+  "Budget must be greater than 0",
+);

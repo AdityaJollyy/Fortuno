@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
@@ -6,7 +5,7 @@ import { getAccountWithTransactions } from "@/actions/account";
 import { unwrap } from "@/lib/action";
 import { formatCurrency } from "@/lib/format";
 
-import { SectionLoader } from "@/components/SectionLoader";
+import { AccountChart } from "../_components/AccountChart";
 import { TransactionTable } from "../_components/TransactionTable";
 
 export default async function AccountPage({ params }) {
@@ -45,9 +44,9 @@ export default async function AccountPage({ params }) {
         </div>
       </div>
 
-      <Suspense fallback={<SectionLoader />}>
-        <TransactionTable transactions={transactions} />
-      </Suspense>
+      <AccountChart transactions={transactions} />
+
+      <TransactionTable transactions={transactions} />
     </div>
   );
 }
