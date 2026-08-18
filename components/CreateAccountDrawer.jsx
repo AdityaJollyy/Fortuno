@@ -30,7 +30,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 
-export function CreateAccountDrawer({ children }) {
+const ACCOUNT_TYPE_LABELS = {
+  CURRENT: "Current",
+  SAVINGS: "Savings",
+};
+
+export function CreateAccountDrawer({ children, nativeButton = false }) {
   const [open, setOpen] = useState(false);
 
   const {
@@ -62,7 +67,7 @@ export function CreateAccountDrawer({ children }) {
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger nativeButton={false} render={children} />
+      <DrawerTrigger nativeButton={nativeButton} render={children} />
 
       <DrawerContent>
         <DrawerHeader>
@@ -93,11 +98,18 @@ export function CreateAccountDrawer({ children }) {
                 render={({ field }) => (
                   <Select value={field.value} onValueChange={field.onChange}>
                     <SelectTrigger id="type" className="w-full">
-                      <SelectValue placeholder="Select type" />
+                      <SelectValue>
+                        {(value) => ACCOUNT_TYPE_LABELS[value] ?? "Select type"}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="CURRENT">Current</SelectItem>
-                      <SelectItem value="SAVINGS">Savings</SelectItem>
+                      {Object.entries(ACCOUNT_TYPE_LABELS).map(
+                        ([value, label]) => (
+                          <SelectItem key={value} value={value}>
+                            {label}
+                          </SelectItem>
+                        ),
+                      )}
                     </SelectContent>
                   </Select>
                 )}

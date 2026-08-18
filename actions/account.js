@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth";
 import { ActionError, ok, fail } from "@/lib/action";
 import { serializeAccount, serializeTransaction } from "@/lib/serialize";
 import { transactionIdsSchema } from "@/app/lib/schema";
+import { requireWithinRateLimit } from "@/lib/ratelimit";
 
 export async function getAccountWithTransactions(accountId) {
   try {
@@ -36,6 +37,7 @@ export async function getAccountWithTransactions(accountId) {
 export async function bulkDeleteTransactions(transactionIds) {
   try {
     const user = await requireUser();
+    await requireWithinRateLimit(user.id);
 
     const ids = transactionIdsSchema.parse(transactionIds);
 
@@ -90,6 +92,7 @@ export async function bulkDeleteTransactions(transactionIds) {
 export async function updateDefaultAccount(accountId) {
   try {
     const user = await requireUser();
+    await requireWithinRateLimit(user.id);
 
     const account = await db.$transaction(async (tx) => {
       const target = await tx.account.findFirst({

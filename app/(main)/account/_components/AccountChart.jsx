@@ -104,7 +104,7 @@ export function AccountChart({ transactions }) {
         <CardAction>
           <Select value={dateRange} onValueChange={setDateRange}>
             <SelectTrigger className="w-[160px]">
-              <SelectValue />
+              <SelectValue>{(value) => DATE_RANGES[value].label}</SelectValue>
             </SelectTrigger>
             <SelectContent>
               {Object.entries(DATE_RANGES).map(([key, { label }]) => (

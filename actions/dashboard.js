@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth";
 import { ok, fail } from "@/lib/action";
 import { serializeAccount } from "@/lib/serialize";
 import { accountSchema } from "@/app/lib/schema";
+import { requireWithinRateLimit } from "@/lib/ratelimit";
 
 export async function getUserAccounts() {
   try {
@@ -31,6 +32,7 @@ export async function getUserAccounts() {
 export async function createAccount(formData) {
   try {
     const user = await requireUser();
+    await requireWithinRateLimit(user.id);
 
     const data = accountSchema.parse(formData);
 

@@ -65,6 +65,18 @@ const RECURRING_INTERVALS = {
   YEARLY: "Yearly",
 };
 
+const TYPE_FILTER_LABELS = {
+  ALL: "All Types",
+  INCOME: "Income",
+  EXPENSE: "Expense",
+};
+
+const RECURRING_FILTER_LABELS = {
+  ALL: "All Transactions",
+  RECURRING: "Recurring Only",
+  ONE_TIME: "Non-recurring Only",
+};
+
 export function TransactionTable({ transactions }) {
   const router = useRouter();
 
@@ -232,12 +244,14 @@ export function TransactionTable({ transactions }) {
             }}
           >
             <SelectTrigger className="w-[140px]">
-              <SelectValue />
+              <SelectValue>{(value) => TYPE_FILTER_LABELS[value]}</SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ALL">All Types</SelectItem>
-              <SelectItem value="INCOME">Income</SelectItem>
-              <SelectItem value="EXPENSE">Expense</SelectItem>
+              {Object.entries(TYPE_FILTER_LABELS).map(([value, label]) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -249,12 +263,16 @@ export function TransactionTable({ transactions }) {
             }}
           >
             <SelectTrigger className="w-[170px]">
-              <SelectValue />
+              <SelectValue>
+                {(value) => RECURRING_FILTER_LABELS[value]}
+              </SelectValue>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="ALL">All Transactions</SelectItem>
-              <SelectItem value="RECURRING">Recurring Only</SelectItem>
-              <SelectItem value="ONE_TIME">Non-recurring Only</SelectItem>
+              {Object.entries(RECURRING_FILTER_LABELS).map(([value, label]) => (
+                <SelectItem key={value} value={value}>
+                  {label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 

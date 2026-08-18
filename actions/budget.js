@@ -7,6 +7,7 @@ import { requireUser } from "@/lib/auth";
 import { ok, fail } from "@/lib/action";
 import { serializeBudget, decimalToNumber } from "@/lib/serialize";
 import { budgetAmountSchema } from "@/app/lib/schema";
+import { requireWithinRateLimit } from "@/lib/ratelimit";
 
 export async function getCurrentBudget(accountId) {
   try {
@@ -45,6 +46,7 @@ export async function getCurrentBudget(accountId) {
 export async function updateBudget(amount) {
   try {
     const user = await requireUser();
+    await requireWithinRateLimit(user.id);
 
     const value = budgetAmountSchema.parse(amount);
 

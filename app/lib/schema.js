@@ -1,6 +1,10 @@
 import { z } from "zod";
 
+import { defaultCategories } from "@/data/categories";
+
 const MONEY_REGEX = /^\d+(\.\d{1,2})?$/;
+
+const CATEGORY_IDS = defaultCategories.map((category) => category.id);
 
 const moneyString = (label) =>
   z
@@ -27,9 +31,12 @@ export const transactionSchema = z
       "Amount must be greater than 0",
     ),
     description: z.string().trim().max(200).optional(),
-    date: z.date({ error: "Date is required" }),
-    accountId: z.string().min(1, "Account is required"),
-    category: z.string().min(1, "Category is required"),
+    date: z
+      .date({ error: "Date is required" })
+      // Checked per parse, not at module load, so it cannot go stale.
+      .refine((value) => value <= new Date(), "Date cannot be in the future"),
+    accountId: z.uuid("Account is required"),
+    category: z.enum(CATEGORY_IDS, { error: "Category is required" }),
     isRecurring: z.boolean(),
     recurringInterval: z
       .enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"])
@@ -43,10 +50,26 @@ export const transactionSchema = z
         path: ["recurringInterval"],
       });
     }
+
+    // A category belongs to one side of the ledger. Switching type in the form
+    // leaves the old category selected, so the server has to catch it.
+    const category = defaultCategories.find(
+      (item) => item.id === data.category,
+    );
+
+    if (category && category.type !== data.type) {
+      ctx.addIssue({
+        code: "custom",
+        message: "Category does not match the transaction type",
+        path: ["category"],
+      });
+    }
   });
 
+export const transactionIdSchema = z.uuid("Invalid transaction id");
+
 export const transactionIdsSchema = z
-  .array(z.uuid("Invalid transaction id"))
+  .array(transactionIdSchema)
   .min(1, "Select at least one transaction")
   .max(500, "You can delete at most 500 transactions at a time");
 
