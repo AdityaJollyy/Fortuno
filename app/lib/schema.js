@@ -40,7 +40,9 @@ export const transactionSchema = z
     isRecurring: z.boolean(),
     recurringInterval: z
       .enum(["DAILY", "WEEKLY", "MONTHLY", "YEARLY"])
-      .optional(),
+      // nullish, not optional: Base UI Select uses null for "nothing selected",
+      // and .optional() accepts undefined only — null fails validation.
+      .nullish(),
   })
   .superRefine((data, ctx) => {
     if (data.isRecurring && !data.recurringInterval) {

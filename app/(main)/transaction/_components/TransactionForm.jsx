@@ -112,8 +112,15 @@ export function TransactionForm({
     router.push(`/account/${transaction.accountId}`);
   };
 
+  // Errors on conditionally-rendered fields have nowhere to display, which
+  // would make the submit button do nothing with no explanation.
+  const onInvalid = (formErrors) => {
+    const firstError = Object.values(formErrors)[0];
+    toast.error(firstError?.message ?? "Please fix the highlighted fields");
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-6">
       {/* Type */}
       <div className="space-y-2">
         <Label htmlFor="type">Type</Label>

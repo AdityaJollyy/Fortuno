@@ -65,6 +65,11 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
     setOpen(false);
   };
 
+  const onInvalid = (formErrors) => {
+    const firstError = Object.values(formErrors)[0];
+    toast.error(firstError?.message ?? "Please fix the highlighted fields");
+  };
+
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger nativeButton={nativeButton} render={children} />
@@ -75,7 +80,10 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
         </DrawerHeader>
 
         <div className="px-4 pb-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form
+            onSubmit={handleSubmit(onSubmit, onInvalid)}
+            className="space-y-4"
+          >
             <div className="space-y-2">
               <Label htmlFor="name">Account Name</Label>
               <Input
