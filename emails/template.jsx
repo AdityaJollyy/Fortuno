@@ -81,10 +81,10 @@ export default function EmailTemplate({
                 <Heading style={styles.heading}>Expenses by Category</Heading>
                 {Object.entries(data.stats.byCategory).map(
                   ([category, amount]) => (
-                    <div key={category} style={styles.row}>
-                      <Text style={styles.text}>{category}</Text>
-                      <Text style={styles.text}>{formatCurrency(amount)}</Text>
-                    </div>
+                    <Text key={category} style={styles.rowText}>
+                      {category.charAt(0).toUpperCase() + category.slice(1)}:{" "}
+                      {formatCurrency(amount)}
+                    </Text>
                   ),
                 )}
               </Section>
@@ -205,9 +205,10 @@ const styles = {
     borderRadius: "4px",
     boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
   },
-  row: {
-    display: "flex",
-    justifyContent: "space-between",
+  rowText: {
+    color: "#4b5563",
+    fontSize: "16px",
+    margin: "0",
     padding: "12px 0",
     borderBottom: "1px solid #e5e7eb",
   },
