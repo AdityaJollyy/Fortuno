@@ -79,3 +79,16 @@ export const budgetAmountSchema = moneyString("Budget amount").refine(
   (value) => Number(value) > 0,
   "Budget must be greater than 0",
 );
+
+export const EXPENSE_CATEGORY_IDS = defaultCategories
+  .filter((category) => category.type === "EXPENSE")
+  .map((category) => category.id);
+
+// The model's output is untrusted input like any other, so it gets parsed.
+export const receiptSchema = z.object({
+  amount: z.number().positive("Could not read an amount from that receipt"),
+  date: z.string().nullish(),
+  merchantName: z.string().nullish(),
+  description: z.string().nullish(),
+  category: z.enum(EXPENSE_CATEGORY_IDS).nullish(),
+});

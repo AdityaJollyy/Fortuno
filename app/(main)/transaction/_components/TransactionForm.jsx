@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CalendarIcon, Loader2, Plus } from "lucide-react";
 import { format } from "date-fns";
@@ -31,6 +31,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { CreateAccountDrawer } from "@/components/CreateAccountDrawer";
+import { ReceiptScanner } from "./ReceiptScanner";
 
 // One map drives both the trigger label and the items, so they cannot drift.
 const TYPE_LABELS = {
@@ -58,7 +59,6 @@ export function TransactionForm({
     handleSubmit,
     control,
     setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm({
@@ -92,8 +92,15 @@ export function TransactionForm({
     editMode ? updateTransaction : createTransaction,
   );
 
-  const type = watch("type");
-  const isRecurring = watch("isRecurring");
+  const type = useWatch({
+    control,
+    name: "type",
+  });
+
+  const isRecurring = useWatch({
+    control,
+    name: "isRecurring",
+  });
 
   const filteredCategories = categories.filter(
     (category) => category.type === type,
@@ -119,8 +126,27 @@ export function TransactionForm({
     toast.error(firstError?.message ?? "Please fix the highlighted fields");
   };
 
+  const handleScanComplete = (receipt) => {
+    setValue("amount", receipt.amount);
+    setValue("date", receipt.date);
+
+    if (receipt.description) {
+      setValue("description", receipt.description);
+    }
+
+    // Every scannable category is an expense, so set both together —
+    // otherwise the schema rejects the type/category mismatch on submit.
+    if (receipt.category) {
+      setValue("type", "EXPENSE");
+      setValue("category", receipt.category);
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-6">
+      {/* Receipt Scanner — create mode only */}
+      {!editMode && <ReceiptScanner onScanComplete={handleScanComplete} />}
+
       {/* Type */}
       <div className="space-y-2">
         <Label htmlFor="type">Type</Label>
@@ -159,8 +185,12 @@ export function TransactionForm({
 
       {/* Amount and Account */}
       <div className="grid gap-6 md:grid-cols-2">
+        {/* Amount */}
         <div className="space-y-2">
-          <Label htmlFor="amount">Amount</Label>
+          <div className="flex h-5 items-center">
+            <Label htmlFor="amount">Amount</Label>
+          </div>
+
           <Input
             id="amount"
             type="text"
@@ -168,21 +198,30 @@ export function TransactionForm({
             placeholder="0.00"
             {...register("amount")}
           />
+
           {errors.amount && (
             <p className="text-destructive text-sm">{errors.amount.message}</p>
           )}
         </div>
 
+        {/* Account */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between">
+          <div className="flex h-5 items-center justify-between">
             <Label htmlFor="accountId">Account</Label>
+
             <CreateAccountDrawer nativeButton>
-              <Button type="button" variant="link" size="xs">
+              <Button
+                type="button"
+                variant="link"
+                size="xs"
+                className="h-5 px-1"
+              >
                 <Plus className="h-3 w-3" />
                 New account
               </Button>
             </CreateAccountDrawer>
           </div>
+
           <Controller
             name="accountId"
             control={control}
@@ -196,6 +235,7 @@ export function TransactionForm({
                     }
                   </SelectValue>
                 </SelectTrigger>
+
                 <SelectContent>
                   {accounts.map((account) => (
                     <SelectItem key={account.id} value={account.id}>
@@ -206,6 +246,7 @@ export function TransactionForm({
               </Select>
             )}
           />
+
           {errors.accountId && (
             <p className="text-destructive text-sm">
               {errors.accountId.message}
