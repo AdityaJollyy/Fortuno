@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { db } from "@/lib/prisma";
 import { requireUser } from "@/lib/auth";
 import { ok, fail } from "@/lib/action";
-import { serializeAccount } from "@/lib/serialize";
+import { serializeAccount, serializeTransaction } from "@/lib/serialize";
 import { accountSchema } from "@/app/lib/schema";
 import { requireWithinRateLimit } from "@/lib/ratelimit";
 
@@ -63,6 +63,31 @@ export async function createAccount(formData) {
 
     revalidatePath("/dashboard");
     return ok(serializeAccount(account));
+  } catch (error) {
+    return fail(error);
+  }
+}
+
+export async function getDashboardData() {
+  try {
+    const user = await requireUser();
+
+    const transactions = await db.transaction.findMany({
+      where: { userId: user.id },
+      orderBy: { date: "desc" },
+      // Only what the overview renders — keeps the RSC payload small.
+      select: {
+        id: true,
+        type: true,
+        amount: true,
+        description: true,
+        date: true,
+        category: true,
+        accountId: true,
+      },
+    });
+
+    return ok(transactions.map(serializeTransaction));
   } catch (error) {
     return fail(error);
   }

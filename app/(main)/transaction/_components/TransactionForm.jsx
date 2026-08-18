@@ -54,6 +54,31 @@ export function TransactionForm({
 }) {
   const router = useRouter();
 
+  // Hoisted so useWatch below can reuse the same initial values instead of
+  // repeating them, which would let the two drift apart.
+  const defaultValues =
+    editMode && initialData
+      ? {
+          type: initialData.type,
+          amount: initialData.amount.toString(),
+          description: initialData.description ?? "",
+          accountId: initialData.accountId,
+          category: initialData.category,
+          date: new Date(initialData.date),
+          isRecurring: initialData.isRecurring,
+          recurringInterval: initialData.recurringInterval ?? null,
+        }
+      : {
+          type: "EXPENSE",
+          amount: "",
+          description: "",
+          accountId: accounts.find((account) => account.isDefault)?.id ?? null,
+          category: null,
+          date: new Date(),
+          isRecurring: false,
+          recurringInterval: null,
+        };
+
   const {
     register,
     handleSubmit,
@@ -63,49 +88,30 @@ export function TransactionForm({
     formState: { errors },
   } = useForm({
     resolver: zodResolver(transactionSchema),
-    defaultValues:
-      editMode && initialData
-        ? {
-            type: initialData.type,
-            amount: initialData.amount.toString(),
-            description: initialData.description ?? "",
-            accountId: initialData.accountId,
-            category: initialData.category,
-            date: new Date(initialData.date),
-            isRecurring: initialData.isRecurring,
-            recurringInterval: initialData.recurringInterval ?? null,
-          }
-        : {
-            type: "EXPENSE",
-            amount: "",
-            description: "",
-            accountId:
-              accounts.find((account) => account.isDefault)?.id ?? null,
-            category: null,
-            date: new Date(),
-            isRecurring: false,
-            recurringInterval: null,
-          },
+    defaultValues,
   });
 
   const { loading, fn: submitFn } = useFetch(
     editMode ? updateTransaction : createTransaction,
   );
 
+  // useWatch, not watch(): watch() returns a function React Compiler cannot
+  // memoize safely, so it skips optimising the whole component.
   const type = useWatch({
     control,
     name: "type",
+    defaultValue: defaultValues.type,
   });
 
   const isRecurring = useWatch({
     control,
     name: "isRecurring",
+    defaultValue: defaultValues.isRecurring,
   });
 
   const filteredCategories = categories.filter(
     (category) => category.type === type,
   );
-
   const onSubmit = async (values) => {
     // Amount stays a string all the way to Prisma. No parseFloat.
     const transaction = editMode

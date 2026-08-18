@@ -1,7 +1,7 @@
 import { Plus } from "lucide-react";
 import { auth } from "@clerk/nextjs/server";
 
-import { getUserAccounts } from "@/actions/dashboard";
+import { getUserAccounts, getDashboardData } from "@/actions/dashboard";
 import { getCurrentBudget } from "@/actions/budget";
 import { unwrap } from "@/lib/action";
 
@@ -9,13 +9,22 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CreateAccountDrawer } from "@/components/CreateAccountDrawer";
 import { AccountCard } from "./_components/AccountCard";
 import { BudgetProgress } from "./_components/BudgetProgress";
+import { DashboardOverview } from "./_components/DashboardOverview";
 
 export default async function DashboardPage() {
   await auth.protect();
 
-  const accounts = unwrap(await getUserAccounts());
+  const [accountsResult, transactionsResult] = await Promise.all([
+    getUserAccounts(),
+    getDashboardData(),
+  ]);
+
+  const accounts = unwrap(accountsResult);
+  const transactions = unwrap(transactionsResult);
+
   const defaultAccount = accounts.find((account) => account.isDefault);
 
+  // Depends on defaultAccount, so it cannot join the Promise.all above.
   const budgetData = defaultAccount
     ? unwrap(await getCurrentBudget(defaultAccount.id))
     : null;
@@ -29,8 +38,12 @@ export default async function DashboardPage() {
         />
       )}
 
+      {accounts.length > 0 && (
+        <DashboardOverview accounts={accounts} transactions={transactions} />
+      )}
+
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <CreateAccountDrawer nativeButton={false}>
+        <CreateAccountDrawer>
           <Card
             data-slot="drawer-trigger"
             className="hover:bg-accent/50 cursor-pointer border-dashed transition-colors"

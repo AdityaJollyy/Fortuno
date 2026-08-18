@@ -132,9 +132,7 @@ export async function updateTransaction(id, formData) {
 
         if (!account) throw new ActionError("Account not found");
 
-        // Reverse the original entry on the account it was posted to. The
-        // tutorial skips this whenever the account changes, which credits the
-        // new account without ever debiting the old one — inventing money.
+        // Reverse the original entry on the account it was posted to.
         await tx.account.update({
           where: { id: original.accountId },
           data: {
@@ -194,6 +192,7 @@ const MAX_RECEIPT_BYTES = 5 * 1024 * 1024;
 
 const ALLOWED_RECEIPT_TYPES = [
   "image/jpeg",
+  "image/jpg",
   "image/png",
   "image/webp",
   "image/heic",
