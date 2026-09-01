@@ -19,6 +19,11 @@ const badgeVariants = cva(
         ghost:
           "hover:bg-muted hover:text-muted-foreground dark:hover:bg-muted/50",
         link: "text-primary underline-offset-4 hover:underline",
+        // Category chip. Carries shape and type only — the colour pair comes from
+        // chipClass(categoryId) in data/categories.js, passed as className:
+        //   <Badge variant="category" className={chipClass(t.category)}>{label}</Badge>
+        category:
+          "font-heading h-auto rounded-xs px-1.5 py-0.5 text-label font-bold tracking-[0.13em] uppercase",
       },
     },
     defaultVariants: {

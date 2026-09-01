@@ -1,31 +1,39 @@
 import { howItWorksData } from "@/data/landing";
 
+const LABEL =
+  "text-label font-heading font-bold tracking-[.13em] uppercase text-muted-foreground";
+
 const HowItWorks = () => {
   return (
-    <section className="bg-blue-50 py-20">
-      <div className="container mx-auto px-4">
-        <h2 className="mb-16 text-center text-3xl font-bold">How It Works</h2>
+    <section id="how" data-reveal className="py-12 md:py-20">
+      <p className={LABEL}>Three steps</p>
 
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
-          {howItWorksData.map((step) => {
-            const Icon = step.icon;
+      <h2 className="text-h2 font-heading text-foreground mt-3 font-extrabold tracking-tight">
+        Getting started
+      </h2>
 
-            return (
-              <div key={step.id} className="text-center">
-                <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
-                  <Icon className="h-8 w-8 text-blue-600" />
-                </div>
+      {/* The dashed top rule runs across all three, so the row reads as one
+          perforated strip rather than three unrelated cards. */}
+      <ol className="mt-9 grid gap-8 md:mt-11 md:grid-cols-3 md:gap-10">
+        {howItWorksData.map((step) => (
+          <li
+            key={step.id}
+            className="border-input border-t border-dashed pt-5"
+          >
+            <span className="text-label font-heading text-muted-foreground bg-muted border-border flex size-8 items-center justify-center rounded-full border font-bold tabular-nums">
+              {step.step}
+            </span>
 
-                <h3 className="mb-4 text-xl font-semibold">
-                  {step.step}. {step.title}
-                </h3>
+            <h3 className="text-h4 font-heading text-foreground mt-4 font-bold">
+              {step.title}
+            </h3>
 
-                <p className="text-gray-600">{step.description}</p>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+            <p className="text-body text-ink-body mt-2 max-w-prose">
+              {step.description}
+            </p>
+          </li>
+        ))}
+      </ol>
     </section>
   );
 };

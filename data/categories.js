@@ -165,3 +165,54 @@ export const categoryColors = defaultCategories.reduce((acc, category) => {
   acc[category.id] = category.color;
   return acc;
 }, {});
+
+// The 21 categories collapse to 12 colour groups. Twelve hues 30° apart at one
+// lightness is the honest ceiling for chips that still look like one family.
+export const CATEGORY_GROUP = {
+  salary: "income",
+  freelance: "income",
+  investments: "income",
+  business: "income",
+  rental: "income",
+  "other-income": "income",
+  housing: "housing",
+  food: "food",
+  groceries: "food",
+  transportation: "transport",
+  utilities: "utilities",
+  bills: "utilities",
+  healthcare: "healthcare",
+  education: "education",
+  travel: "travel",
+  entertainment: "entertainment",
+  shopping: "shopping",
+  gifts: "shopping",
+  personal: "personal",
+  insurance: "other",
+  "other-expense": "other",
+};
+
+// Literal class strings — Tailwind's scanner never sees an interpolated class,
+// so these must never be built from a template string.
+export const CATEGORY_CHIP = {
+  income: "bg-cat-income-fill text-cat-income-ink",
+  housing: "bg-cat-housing-fill text-cat-housing-ink",
+  food: "bg-cat-food-fill text-cat-food-ink",
+  transport: "bg-cat-transport-fill text-cat-transport-ink",
+  utilities: "bg-cat-utilities-fill text-cat-utilities-ink",
+  healthcare: "bg-cat-healthcare-fill text-cat-healthcare-ink",
+  education: "bg-cat-education-fill text-cat-education-ink",
+  travel: "bg-cat-travel-fill text-cat-travel-ink",
+  entertainment: "bg-cat-entertainment-fill text-cat-entertainment-ink",
+  shopping: "bg-cat-shopping-fill text-cat-shopping-ink",
+  personal: "bg-cat-personal-fill text-cat-personal-ink",
+  other: "bg-cat-other-fill text-cat-other-ink",
+};
+
+export function groupOf(categoryId) {
+  return CATEGORY_GROUP[categoryId] ?? "other";
+}
+
+export function chipClass(categoryId) {
+  return CATEGORY_CHIP[groupOf(categoryId)];
+}

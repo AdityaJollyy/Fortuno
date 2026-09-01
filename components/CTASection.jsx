@@ -1,27 +1,34 @@
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
+
+import { formatCurrency } from "@/lib/format";
+import { Button } from "@/components/ui/button";
+
+const LABEL =
+  "text-label font-heading font-bold tracking-[.13em] uppercase text-muted-foreground";
 
 const CTASection = () => {
   return (
-    <section className="bg-blue-600 py-20">
-      <div className="container mx-auto px-4 text-center">
-        <h2 className="mb-4 text-3xl font-bold text-white">
-          Ready to Take Control of Your Finances?
+    <section data-reveal className="py-12 md:py-20">
+      <div className="mx-auto max-w-lg text-center">
+        <p className={LABEL}>The bottom line</p>
+
+        <h2 className="text-h2 font-heading text-foreground mt-3 font-extrabold tracking-tight text-balance">
+          Start with this month.
         </h2>
 
-        <p className="mx-auto mb-8 max-w-2xl text-blue-100">
-          Join thousands of users who are already managing their finances
-          smarter with Fortuno.
+        <p className="text-body text-ink-body mt-3">
+          One account, one number. You&apos;ll know where you stand before the
+          31st.
         </p>
 
-        <Link href="/dashboard">
-          <Button
-            size="lg"
-            className="animate-bounce bg-white text-blue-600 hover:bg-blue-50"
-          >
-            Start Free Trial
-          </Button>
-        </Link>
+        <Button
+          size="lg"
+          className="mt-7 px-6"
+          nativeButton={false}
+          render={<Link href="/dashboard" />}
+        >
+          Create your account
+        </Button>
       </div>
     </section>
   );

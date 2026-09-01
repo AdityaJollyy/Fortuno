@@ -1,11 +1,25 @@
-import { Inter } from "next/font/google";
+import { Manrope, Nunito_Sans } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "next-themes";
+import { ClerkThemeProvider } from "@/components/ClerkThemeProvider";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import Header from "@/components/Header";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "@/components/ui/sonner";
+import Header from "@/components/Header";
+import { Footer } from "@/components/Footer";
 
-const inter = Inter({ subsets: ["latin"] });
+const manrope = Manrope({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-manrope",
+  display: "swap",
+});
+
+const nunito = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-nunito",
+  display: "swap",
+});
 
 export const metadata = {
   title: "Fortuno",
@@ -15,22 +29,29 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <ClerkProvider>
-          <TooltipProvider>
-            <Header />
+    <html
+      lang="en"
+      className={`${manrope.variable} ${nunito.variable}`}
+      suppressHydrationWarning
+    >
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <ClerkThemeProvider>
+            <TooltipProvider>
+              <Header />
 
-            <main className="min-h-screen">{children}</main>
-            <Toaster richColors />
+              <main className="min-h-screen">{children}</main>
+              <Toaster richColors />
 
-            <footer className="bg-blue-50 py-12">
-              <div className="container mx-auto px-4 text-center text-gray-600">
-                <p>Made with 💗</p>
-              </div>
-            </footer>
-          </TooltipProvider>
-        </ClerkProvider>
+              <Footer />
+            </TooltipProvider>
+          </ClerkThemeProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:https": "next dev --experimental-https -H 192.168.29.238",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,6 +15,7 @@
   "dependencies": {
     "@base-ui/react": "^1.7.0",
     "@clerk/nextjs": "^7.7.6",
+    "@clerk/themes": "^2.4.57",
     "@hookform/resolvers": "^5.9.0",
     "@prisma/adapter-pg": "^7.9.1",
     "@prisma/client": "^7.9.1",
@@ -58,6 +60,7 @@
     "@prisma/engines@7.9.1": true,
     "prisma@7.9.1": true,
     "protobufjs@7.6.5": true,
-    "esbuild@0.28.1": true
+    "esbuild@0.28.1": true,
+    "@clerk/shared@3.47.8": true
   }
 }

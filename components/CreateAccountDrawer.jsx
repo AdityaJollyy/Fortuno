@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import {
   Drawer,
   DrawerContent,
+  DrawerDescription,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -35,7 +36,11 @@ const ACCOUNT_TYPE_LABELS = {
   SAVINGS: "Savings",
 };
 
-export function CreateAccountDrawer({ children, nativeButton = false }) {
+export function CreateAccountDrawer({
+  children,
+  nativeButton = false,
+  onCreated,
+}) {
   const [open, setOpen] = useState(false);
 
   const {
@@ -63,6 +68,7 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
     toast.success("Account created successfully");
     reset();
     setOpen(false);
+    onCreated?.(account);
   };
 
   const onInvalid = (formErrors) => {
@@ -74,32 +80,48 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger nativeButton={nativeButton} render={children} />
 
-      <DrawerContent>
+      {/* One shell at every width: a bottom sheet on mobile, the same sheet
+          capped and centred above md. No second dialog, no media query. */}
+      <DrawerContent className="md:data-[swipe-axis=y]:inset-x-[calc((100%-32rem)/2)]">
         <DrawerHeader>
-          <DrawerTitle>Create New Account</DrawerTitle>
+          <DrawerTitle className="text-h4 font-bold tracking-tight">
+            New account
+          </DrawerTitle>
+          <DrawerDescription>
+            Balances are yours to enter — Fortuno doesn&apos;t connect to your
+            bank.
+          </DrawerDescription>
         </DrawerHeader>
 
-        <div className="px-4 pb-6">
+        <div className="overflow-y-auto px-5 pb-6">
+          {/* This drawer is used inside the transaction <form>. Base UI puts
+              the drawer in a portal, so the DOM is not nested — but React
+              events still bubble through the React tree, so a submit here
+              would also submit the form that rendered the drawer. Stop it
+              before react-hook-form runs. */}
           <form
-            onSubmit={handleSubmit(onSubmit, onInvalid)}
+            onSubmit={(event) => {
+              event.stopPropagation();
+              handleSubmit(onSubmit, onInvalid)(event);
+            }}
             className="space-y-4"
           >
             <div className="space-y-2">
-              <Label htmlFor="name">Account Name</Label>
+              <Label htmlFor="name">Name</Label>
               <Input
                 id="name"
-                placeholder="e.g., Main Checking"
+                placeholder="e.g., HDFC Current"
                 {...register("name")}
               />
               {errors.name && (
-                <p className="text-destructive text-sm">
+                <p className="text-destructive text-sm" role="alert">
                   {errors.name.message}
                 </p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="type">Account Type</Label>
+              <Label htmlFor="type">Type</Label>
               <Controller
                 name="type"
                 control={control}
@@ -123,35 +145,34 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
                 )}
               />
               {errors.type && (
-                <p className="text-destructive text-sm">
+                <p className="text-destructive text-sm" role="alert">
                   {errors.type.message}
                 </p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="balance">Initial Balance</Label>
+              <Label htmlFor="balance">Opening balance</Label>
               <Input
                 id="balance"
                 type="text"
                 inputMode="decimal"
                 placeholder="0.00"
+                className="tabular-nums"
                 {...register("balance")}
               />
               {errors.balance && (
-                <p className="text-destructive text-sm">
+                <p className="text-destructive text-sm" role="alert">
                   {errors.balance.message}
                 </p>
               )}
             </div>
 
-            <div className="flex items-center justify-between rounded-lg border p-3">
+            <div className="border-border flex items-center justify-between rounded-md border p-3.5">
               <div className="space-y-0.5 pr-4">
-                <Label htmlFor="isDefault" className="text-base">
-                  Set as Default
-                </Label>
+                <Label htmlFor="isDefault">Make this my default</Label>
                 <p className="text-muted-foreground text-sm">
-                  This account will be selected by default for transactions
+                  Your budget follows the default account.
                 </p>
               </div>
               <Controller
@@ -167,7 +188,7 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
               />
             </div>
 
-            <div className="flex gap-4 pt-2">
+            <div className="flex gap-3 pt-2">
               <DrawerClose
                 render={
                   <Button type="button" variant="outline" className="flex-1">
@@ -178,11 +199,11 @@ export function CreateAccountDrawer({ children, nativeButton = false }) {
               <Button type="submit" className="flex-1" disabled={loading}>
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Creating...
+                    <Loader2 className="size-4 animate-spin" />
+                    Creating…
                   </>
                 ) : (
-                  "Create Account"
+                  "Create account"
                 )}
               </Button>
             </div>

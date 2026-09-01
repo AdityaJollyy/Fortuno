@@ -12,12 +12,18 @@ const moneyString = (label) =>
     .min(1, `${label} is required`)
     .regex(MONEY_REGEX, "Enter a valid amount (up to 2 decimals)");
 
+// Shared so creating and renaming an account can never disagree on what a
+// valid name is.
+export const accountNameSchema = z
+  .string()
+  .trim()
+  .min(1, "Name is required")
+  .max(50, "Name is too long");
+
+export const accountIdSchema = z.uuid("Invalid account id");
+
 export const accountSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(1, "Name is required")
-    .max(50, "Name is too long"),
+  name: accountNameSchema,
   type: z.enum(["CURRENT", "SAVINGS"]),
   balance: moneyString("Initial balance"),
   isDefault: z.boolean(),

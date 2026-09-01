@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
+import { ArrowLeft } from "lucide-react";
 
 import { getUserAccounts } from "@/actions/dashboard";
 import { getTransaction } from "@/actions/transaction";
@@ -7,6 +9,9 @@ import { unwrap } from "@/lib/action";
 import { defaultCategories } from "@/data/categories";
 
 import { TransactionForm } from "../_components/TransactionForm";
+
+const LABEL =
+  "text-label font-heading font-bold tracking-[.13em] uppercase text-muted-foreground";
 
 export default async function AddTransactionPage({ searchParams }) {
   await auth.protect();
@@ -20,13 +25,22 @@ export default async function AddTransactionPage({ searchParams }) {
     notFound();
   }
 
+  // No gutter here — (main)/layout.js already owns the frame gutters.
   return (
-    <div className="mx-auto max-w-3xl px-5">
-      <div className="mb-8 flex justify-center md:justify-normal">
-        <h1 className="gradient gradient-title text-5xl font-bold tracking-tight">
-          {editId ? "Edit Transaction" : "Add Transaction"}
+    <div className="mx-auto max-w-3xl">
+      <header className="mb-6 space-y-3 md:mb-7">
+        <Link
+          href="/dashboard"
+          className={`${LABEL} hover:text-foreground ease-standard inline-flex items-center gap-1.5 transition-colors duration-(--animate-duration-fast)`}
+        >
+          <ArrowLeft className="size-3.5" aria-hidden="true" />
+          Dashboard
+        </Link>
+
+        <h1 className="text-h2 md:text-h1 font-heading text-foreground font-extrabold tracking-tight">
+          {editId ? "Edit transaction" : "Add transaction"}
         </h1>
-      </div>
+      </header>
 
       <TransactionForm
         accounts={accounts}

@@ -5,40 +5,128 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  /* ---- shadcn contract: every one of these names must survive ---- */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* ---- design vocabulary: aliases, never new values ---- */
+  --color-desk: var(--background);
+  --color-paper: var(--card);
+  --color-paper-sunk: var(--muted);
+  --color-paper-hover: var(--accent);
+  --color-rule: var(--border);
+  --color-rule-strong: var(--input);
+  --color-ink: var(--foreground);
+  --color-ink-body: var(--ink-body);
+  --color-ink-muted: var(--muted-foreground);
+  --color-ink-faint: var(--ink-faint);
+  --color-on-primary: var(--primary-foreground);
+  --color-danger: var(--destructive);
+  --color-focus: var(--ring);
+
+  /* ---- genuinely new ---- */
+  --color-positive: var(--positive);
+  --color-highlight: var(--highlight); /* the yellow — fills only in light */
+  --color-highlight-ink: var(--highlight-ink); /* the yellow as text */
+
+  /* ---- category chips: 12 groups × 3 roles ---- */
+  --color-cat-income: var(--cat-income);
+  --color-cat-income-fill: var(--cat-income-fill);
+  --color-cat-income-ink: var(--cat-income-ink);
+  --color-cat-housing: var(--cat-housing);
+  --color-cat-housing-fill: var(--cat-housing-fill);
+  --color-cat-housing-ink: var(--cat-housing-ink);
+  --color-cat-food: var(--cat-food);
+  --color-cat-food-fill: var(--cat-food-fill);
+  --color-cat-food-ink: var(--cat-food-ink);
+  --color-cat-transport: var(--cat-transport);
+  --color-cat-transport-fill: var(--cat-transport-fill);
+  --color-cat-transport-ink: var(--cat-transport-ink);
+  --color-cat-utilities: var(--cat-utilities);
+  --color-cat-utilities-fill: var(--cat-utilities-fill);
+  --color-cat-utilities-ink: var(--cat-utilities-ink);
+  --color-cat-healthcare: var(--cat-healthcare);
+  --color-cat-healthcare-fill: var(--cat-healthcare-fill);
+  --color-cat-healthcare-ink: var(--cat-healthcare-ink);
+  --color-cat-education: var(--cat-education);
+  --color-cat-education-fill: var(--cat-education-fill);
+  --color-cat-education-ink: var(--cat-education-ink);
+  --color-cat-travel: var(--cat-travel);
+  --color-cat-travel-fill: var(--cat-travel-fill);
+  --color-cat-travel-ink: var(--cat-travel-ink);
+  --color-cat-entertainment: var(--cat-entertainment);
+  --color-cat-entertainment-fill: var(--cat-entertainment-fill);
+  --color-cat-entertainment-ink: var(--cat-entertainment-ink);
+  --color-cat-shopping: var(--cat-shopping);
+  --color-cat-shopping-fill: var(--cat-shopping-fill);
+  --color-cat-shopping-ink: var(--cat-shopping-ink);
+  --color-cat-personal: var(--cat-personal);
+  --color-cat-personal-fill: var(--cat-personal-fill);
+  --color-cat-personal-ink: var(--cat-personal-ink);
+  --color-cat-other: var(--cat-other);
+  --color-cat-other-fill: var(--cat-other-fill);
+  --color-cat-other-ink: var(--cat-other-ink);
+
+  /* ---- layout ---- */
+  /* One page width for the header, the landing column, (main) and the footer.
+     Tailwind's --container-* namespace turns this into `max-w-page`. */
+  --container-page: 80rem;
+
+  /* ---- type ---- */
+  --font-sans: var(--font-nunito), system-ui, sans-serif;
+  --font-heading: var(--font-manrope), system-ui, sans-serif;
+  --font-display: var(--font-manrope), system-ui, sans-serif;
+
+  --text-display-lg: 3.75rem;
+  --text-display-lg--line-height: 1;
+  --text-h1: 2.375rem;
+  --text-h1--line-height: 1.08;
+  --text-h2: 1.875rem;
+  --text-h2--line-height: 1.15;
+  --text-h3: 1.5rem;
+  --text-h3--line-height: 1.2;
+  --text-h4: 1.1875rem;
+  --text-h4--line-height: 1.25;
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.7;
+  --text-body-sm: 0.84375rem;
+  --text-body-sm--line-height: 1.6;
+  --text-label: 0.65625rem;
+  --text-label--line-height: 1.2;
+  --text-money-xl: 2.75rem;
+  --text-money-lg: 1.875rem;
+  --text-money: 1.0625rem;
+
+  /* ---- radii: the existing calc() ladder off --radius, unchanged ---- */
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -46,33 +134,109 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* ---- shadow ---- */
+  --shadow-paper: 0 1px 2px var(--shadow-tint-1);
+  --shadow-lift: 0 2px 8px var(--shadow-tint-2);
+  --shadow-float: 0 12px 32px var(--shadow-tint-3);
+
+  /* ---- motion ---- */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-soft: cubic-bezier(0.16, 0.84, 0.36, 1);
+  --animate-duration-fast: 150ms;
+  --animate-duration-base: 200ms;
+  --animate-duration-slow: 250ms;
+  --animate-duration-section: 320ms;
+  --animate-duration-page: 400ms;
+
+  /* The two loops in the app, and the only ones. Overriding Tailwind's own
+     --animate-spin retimes every inline Loader2 at once, so no component has
+     to carry a duration. */
+  --animate-spin: fortuno-spin 0.7s linear infinite;
+  --animate-pulse-soft: fortuno-pulse 1.4s var(--ease-standard) infinite;
 }
 
+/* Light theme. Dark is what ships by default — see app/layout.js. */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  color-scheme: light;
+
   --radius: 0.625rem;
+
+  --background: oklch(0.975 0.014 250);
+  --foreground: oklch(0.285 0.058 268);
+  --card: oklch(0.996 0.005 250);
+  --card-foreground: oklch(0.285 0.058 268);
+  --popover: oklch(0.996 0.005 250);
+  --popover-foreground: oklch(0.285 0.058 268);
+  --primary: oklch(0.505 0.175 266);
+  --primary-foreground: oklch(0.992 0.008 250);
+  --secondary: oklch(0.958 0.016 252);
+  --secondary-foreground: oklch(0.285 0.058 268);
+  --muted: oklch(0.958 0.016 252);
+  --muted-foreground: oklch(0.485 0.048 265);
+  --accent: oklch(0.968 0.014 252);
+  --accent-foreground: oklch(0.285 0.058 268);
+  --destructive: oklch(0.525 0.155 025);
+  --border: oklch(0.905 0.02 255);
+  --input: oklch(0.838 0.028 255);
+  --ring: oklch(0.505 0.175 266);
+
+  --ink-body: oklch(0.35 0.052 267);
+  --ink-faint: oklch(0.645 0.042 262);
+  --positive: oklch(0.495 0.115 172);
+  --highlight: oklch(0.815 0.155 090);
+  --highlight-ink: oklch(0.505 0.105 078);
+
+  --shadow-tint-1: oklch(0.285 0.058 268 / 0.06);
+  --shadow-tint-2: oklch(0.285 0.058 268 / 0.08);
+  --shadow-tint-3: oklch(0.285 0.058 268 / 0.14);
+
+  /* chart 1–5 follow the category dot hues at the light recipe */
+  --chart-1: oklch(0.6 0.11 172);
+  --chart-2: oklch(0.6 0.11 025);
+  --chart-3: oklch(0.6 0.11 055);
+  --chart-4: oklch(0.6 0.11 085);
+  --chart-5: oklch(0.6 0.11 270);
+
+  /* category chips · light — dot L.60 C.11 · fill L.92 C.045 · ink L.40 C.075 */
+  --cat-income: oklch(0.6 0.11 172);
+  --cat-income-fill: oklch(0.92 0.045 172);
+  --cat-income-ink: oklch(0.4 0.075 172);
+  --cat-housing: oklch(0.6 0.11 025);
+  --cat-housing-fill: oklch(0.92 0.045 025);
+  --cat-housing-ink: oklch(0.4 0.075 025);
+  --cat-food: oklch(0.6 0.11 055);
+  --cat-food-fill: oklch(0.92 0.045 055);
+  --cat-food-ink: oklch(0.4 0.075 055);
+  --cat-transport: oklch(0.6 0.11 085);
+  --cat-transport-fill: oklch(0.92 0.045 085);
+  --cat-transport-ink: oklch(0.4 0.075 085);
+  --cat-utilities: oklch(0.6 0.11 120);
+  --cat-utilities-fill: oklch(0.92 0.045 120);
+  --cat-utilities-ink: oklch(0.4 0.075 120);
+  --cat-healthcare: oklch(0.6 0.11 180);
+  --cat-healthcare-fill: oklch(0.92 0.045 180);
+  --cat-healthcare-ink: oklch(0.4 0.075 180);
+  --cat-education: oklch(0.6 0.11 210);
+  --cat-education-fill: oklch(0.92 0.045 210);
+  --cat-education-ink: oklch(0.4 0.075 210);
+  --cat-travel: oklch(0.6 0.11 240);
+  --cat-travel-fill: oklch(0.92 0.045 240);
+  --cat-travel-ink: oklch(0.4 0.075 240);
+  --cat-entertainment: oklch(0.6 0.11 270);
+  --cat-entertainment-fill: oklch(0.92 0.045 270);
+  --cat-entertainment-ink: oklch(0.4 0.075 270);
+  --cat-shopping: oklch(0.6 0.11 300);
+  --cat-shopping-fill: oklch(0.92 0.045 300);
+  --cat-shopping-ink: oklch(0.4 0.075 300);
+  --cat-personal: oklch(0.6 0.11 330);
+  --cat-personal-fill: oklch(0.92 0.045 330);
+  --cat-personal-ink: oklch(0.4 0.075 330);
+  --cat-other: oklch(0.6 0.015 262);
+  --cat-other-fill: oklch(0.92 0.008 262);
+  --cat-other-ink: oklch(0.4 0.02 265);
+
+  /* sidebar block: unused by this app, kept because shadcn expects it */
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: oklch(0.205 0 0);
@@ -83,30 +247,85 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Dark theme — the default. Build and check this one first. */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
+  color-scheme: dark;
+
+  --background: oklch(0.205 0.045 270);
+  --foreground: oklch(0.965 0.012 250);
+  --card: oklch(0.262 0.048 270);
+  --card-foreground: oklch(0.965 0.012 250);
+  --popover: oklch(0.262 0.048 270);
+  --popover-foreground: oklch(0.965 0.012 250);
+  --primary: oklch(0.815 0.115 220);
+  --primary-foreground: oklch(0.235 0.06 265);
+  --secondary: oklch(0.312 0.052 270);
+  --secondary-foreground: oklch(0.965 0.012 250);
+  --muted: oklch(0.312 0.052 270);
+  --muted-foreground: oklch(0.785 0.032 255);
+  --accent: oklch(0.285 0.05 270);
+  --accent-foreground: oklch(0.965 0.012 250);
+  --destructive: oklch(0.735 0.135 025);
+  --border: oklch(0.368 0.052 270);
+  --input: oklch(0.425 0.052 270);
+  --ring: oklch(0.815 0.115 220);
+
+  --ink-body: oklch(0.875 0.026 255);
+  --ink-faint: oklch(0.655 0.038 258);
+  --positive: oklch(0.835 0.115 172);
+  --highlight: oklch(0.885 0.145 092);
+  --highlight-ink: oklch(0.885 0.145 092);
+
+  --shadow-tint-1: oklch(0.14 0.04 270 / 0.3);
+  --shadow-tint-2: oklch(0.14 0.04 270 / 0.38);
+  --shadow-tint-3: oklch(0.14 0.04 270 / 0.55);
+
+  /* chart 1–5 follow the category dot hues at the dark recipe */
+  --chart-1: oklch(0.72 0.08 172);
+  --chart-2: oklch(0.72 0.08 025);
+  --chart-3: oklch(0.72 0.08 055);
+  --chart-4: oklch(0.72 0.08 085);
+  --chart-5: oklch(0.72 0.08 270);
+
+  /* category chips · dark — dot L.72 C.08 · fill L.30 C.035 · ink L.82 C.05 */
+  --cat-income: oklch(0.72 0.08 172);
+  --cat-income-fill: oklch(0.3 0.035 172);
+  --cat-income-ink: oklch(0.82 0.05 172);
+  --cat-housing: oklch(0.72 0.08 025);
+  --cat-housing-fill: oklch(0.3 0.035 025);
+  --cat-housing-ink: oklch(0.82 0.05 025);
+  --cat-food: oklch(0.72 0.08 055);
+  --cat-food-fill: oklch(0.3 0.035 055);
+  --cat-food-ink: oklch(0.82 0.05 055);
+  --cat-transport: oklch(0.72 0.08 085);
+  --cat-transport-fill: oklch(0.3 0.035 085);
+  --cat-transport-ink: oklch(0.82 0.05 085);
+  --cat-utilities: oklch(0.72 0.08 120);
+  --cat-utilities-fill: oklch(0.3 0.035 120);
+  --cat-utilities-ink: oklch(0.82 0.05 120);
+  --cat-healthcare: oklch(0.72 0.08 180);
+  --cat-healthcare-fill: oklch(0.3 0.035 180);
+  --cat-healthcare-ink: oklch(0.82 0.05 180);
+  --cat-education: oklch(0.72 0.08 210);
+  --cat-education-fill: oklch(0.3 0.035 210);
+  --cat-education-ink: oklch(0.82 0.05 210);
+  --cat-travel: oklch(0.72 0.08 240);
+  --cat-travel-fill: oklch(0.3 0.035 240);
+  --cat-travel-ink: oklch(0.82 0.05 240);
+  --cat-entertainment: oklch(0.72 0.08 270);
+  --cat-entertainment-fill: oklch(0.3 0.035 270);
+  --cat-entertainment-ink: oklch(0.82 0.05 270);
+  --cat-shopping: oklch(0.72 0.08 300);
+  --cat-shopping-fill: oklch(0.3 0.035 300);
+  --cat-shopping-ink: oklch(0.82 0.05 300);
+  --cat-personal: oklch(0.72 0.08 330);
+  --cat-personal-fill: oklch(0.3 0.035 330);
+  --cat-personal-ink: oklch(0.82 0.05 330);
+  --cat-other: oklch(0.75 0.03 262);
+  --cat-other-fill: oklch(0.315 0.028 265);
+  --cat-other-ink: oklch(0.845 0.03 258);
+
+  /* sidebar block: unused by this app, kept because shadcn expects it */
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
   --sidebar-primary: oklch(0.488 0.243 264.376);
@@ -122,17 +341,201 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
   }
   html {
     @apply font-sans;
   }
+  h1,
+  h2,
+  h3,
+  h4,
+  button,
+  th,
+  label {
+    font-family: var(--font-heading);
+  }
+  /* Money, counts, dates, percentages — everything numeric. */
+  .tnum,
+  td,
+  th,
+  time,
+  output {
+    font-variant-numeric: tabular-nums;
+  }
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+@layer components {
+  /* The perforated tear-off edge. Applied to the budget receipt, the month
+     summary and the scanned-receipt card — nowhere else.
+
+     It MUST be a sibling that sits directly below the card, never a child of
+     it. The strip paints itself in --card and punches holes through that
+     paint; inside a bg-card parent the holes just reveal more card and the
+     scallops are invisible. Outside, they fall on the page background.
+
+     The card above it therefore carries `rounded-t-*` + `border-x border-t`
+     and no bottom border, so nothing draws across the tear. */
+  .receipt-edge {
+    height: 12px;
+    -webkit-mask-image: radial-gradient(
+      7px 7px at 7px 12px,
+      transparent 0 6.5px,
+      #000 7px
+    );
+    mask-image: radial-gradient(
+      7px 7px at 7px 12px,
+      transparent 0 6.5px,
+      #000 7px
+    );
+    -webkit-mask-size: 14px 12px;
+    mask-size: 14px 12px;
+    -webkit-mask-repeat: repeat-x;
+    mask-repeat: repeat-x;
+    background: var(--card);
+  }
+
+  /* Indeterminate scan bar, used only while a receipt is with the model.
+     Transform only, and it stops the moment the scan resolves. */
+  .scan-sweep {
+    animation: fortuno-sweep 1.6s linear infinite;
+  }
+
+  /* Ticket notch used between landing sections. */
+  .notch-rule {
+    position: relative;
+    border-top: 1px dashed var(--input);
+  }
+  .notch-rule::before,
+  .notch-rule::after {
+    content: "";
+    position: absolute;
+    top: -9px;
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: var(--background);
+  }
+  .notch-rule::before {
+    left: -9px;
+  }
+  .notch-rule::after {
+    right: -9px;
+  }
 }
 
 @utility gradient {
-  @apply bg-gradient-to-br from-blue-600 to-purple-600;
+  @apply from-primary to-highlight bg-linear-to-br;
 }
 
 @utility gradient-title {
-  @apply bg-clip-text pr-2 pb-2 font-extrabold tracking-tighter text-transparent;
+  @apply font-heading bg-clip-text pr-2 pb-2 font-extrabold tracking-tighter text-transparent;
+}
+
+@keyframes fortuno-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fortuno-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes fortuno-slide {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes fortuno-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.55;
+  }
+}
+@keyframes fortuno-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes fortuno-sweep {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+/* Section reveal. Armed only where a script can actually disarm it — with JS
+   off the sections render as they are, rather than staying invisible forever. */
+@media (scripting: enabled) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity var(--animate-duration-section) var(--ease-out-soft),
+      transform var(--animate-duration-section) var(--ease-out-soft);
+  }
+  [data-reveal].is-revealed {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Budget bar draw, once, on mount: the fill enters at scaleX(0) and settles at
+   its inline width. The width itself is never animated — only the transform. */
+@starting-style {
+  [data-slot="progress-indicator"] {
+    transform: scaleX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* Reveals must land in their FINAL state, not their start state. */
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .animate-pulse-soft {
+    animation: none !important;
+    opacity: 0.75;
+  }
+  /* Without this the 1ms override would leave the bar parked off-screen at
+     translateX(300%), i.e. an empty track with no sign of work. */
+  .scan-sweep {
+    animation: none !important;
+    transform: none !important;
+    width: 100%;
+    opacity: 0.55;
+  }
 }

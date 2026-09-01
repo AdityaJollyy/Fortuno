@@ -1,130 +1,94 @@
-import {
-  BarChart3,
-  Receipt,
-  PieChart,
-  CreditCard,
-  Globe,
-  Zap,
-} from "lucide-react";
+import { Gauge, Mail, Receipt, Wallet } from "lucide-react";
 
-// Stats Data
-export const statsData = [
-  {
-    id: "active-users",
-    value: "50K+",
-    label: "Active Users",
-  },
-  {
-    id: "transactions-tracked",
-    value: "$2B+",
-    label: "Transactions Tracked",
-  },
-  {
-    id: "uptime",
-    value: "99.9%",
-    label: "Uptime",
-  },
-  {
-    id: "user-rating",
-    value: "4.9/5",
-    label: "User Rating",
-  },
-];
+// The trust line under the hero buttons. Three things that are true, not three
+// invented numbers. This used to be a full-width band of its own.
+export const trustPoints = ["Rupees only", "No bank logins", "No ads, ever"];
 
-// Features Data
+// "What it does"
 export const featuresData = [
   {
-    id: "advanced-analytics",
-    icon: BarChart3,
-    title: "Advanced Analytics",
+    id: "one-balance",
+    icon: Wallet,
+    title: "All your accounts, one balance",
     description:
-      "Get detailed insights into your spending patterns with AI-powered analytics",
+      "Salary account, savings, the UPI wallet you actually spend from. Add them by hand — Fortuno never asks for your bank password.",
   },
   {
-    id: "smart-receipt-scanner",
+    id: "budget-pace",
+    icon: Gauge,
+    title: "A budget that tells you the pace",
+    description:
+      "Set one monthly number. Fortuno shows what's left and whether you're ahead of the month — a warning at 80%, not a lecture at 100%.",
+  },
+  {
+    id: "receipt-scanner",
     icon: Receipt,
-    title: "Smart Receipt Scanner",
+    title: "Photograph the bill, skip the typing",
     description:
-      "Extract data automatically from receipts using advanced AI technology",
+      "Point your camera at a restaurant bill or a Zepto slip. Amount, date and merchant come back filled in for you to check.",
   },
   {
-    id: "budget-planning",
-    icon: PieChart,
-    title: "Budget Planning",
-    description: "Create and manage budgets with intelligent recommendations",
-  },
-  {
-    id: "multi-account-support",
-    icon: CreditCard,
-    title: "Multi-Account Support",
-    description: "Manage multiple accounts and credit cards in one place",
-  },
-  {
-    id: "multi-currency",
-    icon: Globe,
-    title: "Multi-Currency",
-    description: "Support for multiple currencies with real-time conversion",
-  },
-  {
-    id: "automated-insights",
-    icon: Zap,
-    title: "Automated Insights",
-    description: "Get automated financial insights and recommendations",
+    id: "monthly-email",
+    icon: Mail,
+    title: "One email at the end of the month",
+    description:
+      "A short written summary of where the money went and what changed since last month. One email. No notifications.",
   },
 ];
 
-// How It Works Data
+// "Getting started" — numbered, not iconed. The numeral is the whole point.
 export const howItWorksData = [
   {
-    id: "create-account",
-    icon: CreditCard,
+    id: "add-account",
     step: 1,
-    title: "Create Your Account",
-    description:
-      "Get started in minutes with our simple and secure sign-up process",
+    title: "Add an account",
+    description: "Name and current balance. Thirty seconds.",
   },
   {
-    id: "track-spending",
-    icon: BarChart3,
+    id: "set-budget",
     step: 2,
-    title: "Track Your Spending",
-    description:
-      "Automatically categorize and track your transactions in real-time",
+    title: "Set your monthly number",
+    description: "What you want to stay under, all in.",
   },
   {
-    id: "get-insights",
-    icon: PieChart,
+    id: "log-as-you-go",
     step: 3,
-    title: "Get Insights",
-    description:
-      "Receive AI-powered insights and recommendations to optimize your finances",
+    title: "Log as you go",
+    description: "Scan bills, or type them in. Recurring ones log themselves.",
   },
 ];
 
-// Testimonials Data
-export const testimonialsData = [
+// "Fair questions" — what the section that used to hold invented testimonials
+// now holds instead. Every answer describes behaviour the app actually has.
+export const faqData = [
   {
-    id: "sarah-johnson",
-    name: "Sarah Johnson",
-    role: "Small Business Owner",
-    image: "https://randomuser.me/api/portraits/women/75.jpg",
-    quote:
-      "Welth has transformed how I manage my business finances. The AI insights have helped me identify cost-saving opportunities I never knew existed.",
+    id: "bank-login",
+    question: "Do I have to connect my bank?",
+    answer:
+      "No, and you can't. Accounts are added by hand with a name and a balance. Fortuno never asks for a bank password, a UPI PIN or an OTP, so there is nothing here worth stealing.",
   },
   {
-    id: "michael-chen",
-    name: "Michael Chen",
-    role: "Freelancer",
-    image: "https://randomuser.me/api/portraits/men/75.jpg",
-    quote:
-      "The receipt scanning feature saves me hours each month. Now I can focus on my work instead of manual data entry and expense tracking.",
+    id: "what-counts",
+    question: "What counts against my budget?",
+    answer:
+      "Expenses on your default account, for the current calendar month. Switch which account is the default from the dashboard and the budget follows it. Everything else is still tracked, just not counted here.",
   },
   {
-    id: "emily-rodriguez",
-    name: "Emily Rodriguez",
-    role: "Financial Advisor",
-    image: "https://randomuser.me/api/portraits/women/74.jpg",
-    quote:
-      "I recommend Welth to all my clients. The multi-currency support and detailed analytics make it perfect for international investors.",
+    id: "scan-accuracy",
+    question: "How accurate is the receipt scan?",
+    answer:
+      "It reads the total, the date and the merchant off a photo and fills the form in for you. Nothing is saved until you press save, so a bad read costs you one correction — never a wrong balance.",
+  },
+  {
+    id: "notifications",
+    question: "Will it nag me?",
+    answer:
+      "Twice a month at most. One email when you cross 80% of the budget, and one short summary once the month is over. No push notifications, no streaks.",
+  },
+  {
+    id: "recurring",
+    question: "What about things I pay every month?",
+    answer:
+      "Mark a transaction recurring and pick the interval. Fortuno posts it on schedule and moves the balance with it, so rent and subscriptions stop being the ones you forget.",
   },
 ];

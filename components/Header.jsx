@@ -1,67 +1,101 @@
-import { Button } from "./ui/button";
-import { PenBox, LayoutDashboard } from "lucide-react";
 import Link from "next/link";
-import { Show, SignInButton, UserButton } from "@clerk/nextjs";
-import Image from "next/image";
-import { checkUser } from "@/lib/checkUser";
+import { Plus } from "lucide-react";
+import { SignInButton, UserButton } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
+import { format } from "date-fns";
+
+import { AuthSlot } from "@/components/AuthSlot";
+import { Button } from "@/components/ui/button";
+import { MobileNav } from "@/components/MobileNav";
+import { ThemeToggle } from "@/components/ThemeToggle";
+
+// Body size, not body-sm, with real padding and a hover surface: at label size
+// and zero padding these read as caption text sitting on the wordmark.
+const NAV_LINK =
+  "text-body font-heading text-muted-foreground hover:text-foreground hover:bg-muted rounded-md px-3 py-1.5 font-semibold transition-colors duration-(--animate-duration-fast) ease-standard outline-none focus-visible:ring-3 focus-visible:ring-ring/50";
 
 const Header = async () => {
-  await checkUser(); // put in database if user doesn't exist yet, otherwise do nothing
+  // Only the first paint's worth of auth state — AuthSlot takes over from
+  // Clerk's client session as soon as it has loaded. The DB user row is no
+  // longer created here; requireUser() owns that, so a client-side navigation
+  // after sign-up cannot skip it.
+  const { userId } = await auth();
+  const signedIn = Boolean(userId);
 
   return (
-    <header className="fixed top-0 z-50 w-full border-b bg-white/80 backdrop-blur-md">
-      <nav className="container mx-auto flex items-center justify-between px-4 py-4">
-        <Link href="/">
-          <Image
-            src={"/logo.webp"}
-            alt="Fortuno Logo"
-            width={200}
-            height={60}
-            className="h-12 w-auto object-contain"
-            loading="eager"
-          />
+    <header className="border-border bg-background/80 fixed top-0 z-50 w-full border-b backdrop-blur-md">
+      <nav className="max-w-page mx-auto flex h-16 w-full items-center gap-3 px-5 md:h-18 md:px-8">
+        <Link
+          href="/"
+          aria-label="Fortuno home"
+          className="focus-visible:ring-ring/50 shrink-0 rounded-xs outline-none focus-visible:ring-3"
+        >
+          <span className="text-h4 font-heading text-foreground font-extrabold tracking-[-0.045em] lowercase">
+            fortuno<span className="text-highlight-ink">.</span>
+          </span>
         </Link>
 
-        {/* Navigation Links - Different for signed in/out users */}
-        <div className="hidden items-center space-x-8 md:flex">
-          <Show when="signed-out">
-            <a href="#features" className="text-gray-600 hover:text-blue-600">
-              Features
+        {/* Inline nav — md and up. Below md it lives in the avatar sheet. The
+            hairline plus the ml is what stops it from crowding the wordmark. */}
+        <div className="ml-2 hidden items-center gap-1 md:ml-4 md:flex">
+          <span
+            aria-hidden="true"
+            className="bg-border mr-3 hidden h-5 w-px md:block"
+          />
+
+          <AuthSlot when="signed-in" serverSignedIn={signedIn}>
+            <Link href="/dashboard" className={NAV_LINK}>
+              Dashboard
+            </Link>
+          </AuthSlot>
+
+          <AuthSlot when="signed-out" serverSignedIn={signedIn}>
+            <a href="#features" className={NAV_LINK}>
+              What it does
             </a>
-            <a
-              href="#testimonials"
-              className="text-gray-600 hover:text-blue-600"
-            >
-              Testimonials
+            <a href="#how" className={NAV_LINK}>
+              How it works
             </a>
-          </Show>
+            <a href="#faq" className={NAV_LINK}>
+              FAQ
+            </a>
+          </AuthSlot>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex items-center space-x-4">
-          <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="flex items-center gap-2 text-gray-600 hover:text-blue-600"
+        <div className="ml-auto flex items-center gap-2 md:gap-3">
+          <AuthSlot when="signed-in" serverSignedIn={signedIn}>
+            {/* Display-only on the dashboard; becomes the date-range trigger on
+                account detail, which is a later phase. */}
+            <span className="text-label font-heading text-muted-foreground bg-muted border-border hidden rounded-xs border px-2 py-1.5 font-bold tracking-[.13em] uppercase tabular-nums sm:inline-block">
+              {format(new Date(), "MMM yyyy")}
+            </span>
+
+            {/* nativeButton={false} because the render prop swaps the native
+                <button> for an <a> — Base UI warns without it. */}
+            <Button
+              className="hidden md:inline-flex"
+              nativeButton={false}
+              render={<Link href="/transaction/create" />}
             >
-              <Button variant="outline">
-                <LayoutDashboard size={18} />
-                <span className="hidden md:inline">Dashboard</span>
-              </Button>
-            </Link>
-            <Link href="/transaction/create">
-              <Button className="flex items-center gap-2">
-                <PenBox size={18} />
-                <span className="hidden md:inline">Add Transaction</span>
-              </Button>
-            </Link>
-          </Show>
-          <Show when="signed-out">
+              <Plus />
+              Add transaction
+            </Button>
+
+            <span className="hidden md:inline-flex">
+              <ThemeToggle />
+            </span>
+
+            <MobileNav />
+          </AuthSlot>
+
+          <AuthSlot when="signed-out" serverSignedIn={signedIn}>
+            <ThemeToggle />
             <SignInButton forceRedirectUrl="/dashboard">
               <Button variant="outline">Login</Button>
             </SignInButton>
-          </Show>
-          <Show when="signed-in">
+          </AuthSlot>
+
+          <AuthSlot when="signed-in" serverSignedIn={signedIn}>
             <UserButton
               appearance={{
                 elements: {
@@ -69,7 +103,7 @@ const Header = async () => {
                 },
               }}
             />
-          </Show>
+          </AuthSlot>
         </div>
       </nav>
     </header>
