@@ -13,6 +13,10 @@ import { TransactionForm } from "../_components/TransactionForm";
 const LABEL =
   "text-label font-heading font-bold tracking-[.13em] uppercase text-muted-foreground";
 
+// scanReceipt() runs as a server action on this route — an image round-trip
+// to Gemini needs more than the default window.
+export const maxDuration = 60;
+
 export default async function AddTransactionPage({ searchParams }) {
   await auth.protect();
 

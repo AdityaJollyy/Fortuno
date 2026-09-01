@@ -8,6 +8,9 @@ import {
   triggerRecurringTransactions,
 } from "@/lib/inngest/functions";
 
+// Inngest invokes this route once per step. AI + DB steps need headroom.
+export const maxDuration = 60;
+
 export const { GET, POST, PUT } = serve({
   client: inngest,
   functions: [
