@@ -64,7 +64,11 @@ export function AccountActions({
   const [newName, setNewName] = useState(name);
 
   const { loading: renaming, fn: renameFn } = useFetch(updateAccountName);
-  const { loading: deleting, fn: deleteFn } = useFetch(deleteAccount);
+  const { loading: deleting, fn: deleteFn } = useFetch(deleteAccount, {
+    onSuccess: () => {
+      if (redirectOnDelete) router.replace("/dashboard");
+    },
+  });
 
   const trimmedName = newName.trim();
 
@@ -85,7 +89,6 @@ export function AccountActions({
 
     setRenameOpen(false);
     toast.success("Account renamed");
-    router.refresh();
   };
 
   const handleDelete = async () => {
@@ -99,14 +102,6 @@ export function AccountActions({
         ? `Account deleted · ${result.promoted.name} is now the default`
         : "Account deleted",
     );
-
-    // The page we are standing on is gone, so leave before refreshing.
-    if (redirectOnDelete) {
-      router.push("/dashboard");
-      return;
-    }
-
-    router.refresh();
   };
 
   return (

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
-import { SignInButton, UserButton } from "@clerk/nextjs";
+import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { format } from "date-fns";
 
@@ -8,6 +8,7 @@ import { AuthSlot } from "@/components/AuthSlot";
 import { Button } from "@/components/ui/button";
 import { MobileNav } from "@/components/MobileNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { NavSpinner } from "./NavSpinner";
 
 // Body size, not body-sm, with real padding and a hover surface: at label size
 // and zero padding these read as caption text sitting on the wordmark.
@@ -44,8 +45,12 @@ const Header = async () => {
           />
 
           <AuthSlot when="signed-in" serverSignedIn={signedIn}>
-            <Link href="/dashboard" className={NAV_LINK}>
+            <Link
+              href="/dashboard"
+              className={`${NAV_LINK} inline-flex items-center gap-1.5`}
+            >
               Dashboard
+              <NavSpinner />
             </Link>
           </AuthSlot>
 
@@ -79,6 +84,7 @@ const Header = async () => {
             >
               <Plus />
               Add transaction
+              <NavSpinner />
             </Button>
 
             <span className="hidden md:inline-flex">
@@ -90,9 +96,14 @@ const Header = async () => {
 
           <AuthSlot when="signed-out" serverSignedIn={signedIn}>
             <ThemeToggle />
-            <SignInButton forceRedirectUrl="/dashboard">
-              <Button variant="outline">Login</Button>
-            </SignInButton>
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={<Link href="/sign-in" />}
+            >
+              Login
+              <NavSpinner />
+            </Button>
           </AuthSlot>
 
           <AuthSlot when="signed-in" serverSignedIn={signedIn}>

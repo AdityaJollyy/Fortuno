@@ -1,49 +1,67 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef, useTransition } from "react";
 import { toast } from "sonner";
 
-// Runs a server action from a client component: tracks pending state and
-// toasts on failure. Returns the action's data, or undefined if it failed.
-export default function useFetch(action) {
+export default function useFetch(action, { onSuccess } = {}) {
   const [data, setData] = useState(undefined);
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [isPending, startTransition] = useTransition();
+
+  const onSuccessRef = useRef(onSuccess);
+
+  useEffect(() => {
+    onSuccessRef.current = onSuccess;
+  });
+
+  const resolveRef = useRef(null);
+  const resultRef = useRef(undefined);
+
+  // isPending going false is the signal that the new tree is on screen.
+  useEffect(() => {
+    if (isPending || !resolveRef.current) return;
+
+    const resolve = resolveRef.current;
+    resolveRef.current = null;
+    resolve(resultRef.current);
+  }, [isPending]);
 
   const fn = useCallback(
-    async (...args) => {
-      setLoading(true);
-      setError(null);
+    (...args) =>
+      new Promise((resolve) => {
+        resolveRef.current = resolve;
+        resultRef.current = undefined;
+        setError(null);
 
-      try {
-        const result = await action(...args);
+        startTransition(async () => {
+          try {
+            const result = await action(...args);
 
-        if (!result || typeof result.success !== "boolean") {
-          throw new Error(
-            "Action must return ok() or fail() from lib/action.js",
-          );
-        }
+            if (!result || typeof result.success !== "boolean") {
+              throw new Error(
+                "Action must return ok() or fail() from lib/action.js",
+              );
+            }
 
-        if (!result.success) {
-          setError(result.error);
-          toast.error(result.error);
-          return undefined;
-        }
+            if (!result.success) {
+              setError(result.error);
+              toast.error(result.error);
+              return;
+            }
 
-        setData(result.data);
-        return result.data;
-      } catch (err) {
-        console.error(err);
-        const message = "Something went wrong. Please try again.";
-        setError(message);
-        toast.error(message);
-        return undefined;
-      } finally {
-        setLoading(false);
-      }
-    },
+            setData(result.data);
+            resultRef.current = result.data;
+            onSuccessRef.current?.(result.data);
+          } catch (err) {
+            console.error(err);
+            const message = "Something went wrong. Please try again.";
+            setError(message);
+            toast.error(message);
+          }
+        });
+      }),
     [action],
   );
 
-  return { data, loading, error, fn, setData };
+  return { data, loading: isPending, error, fn, setData };
 }

@@ -12,6 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { NavSpinner } from "./NavSpinner";
 
 // The sheet the avatar row opens below `md`: everything the inline nav shows at
 // `md` and up, plus the theme switch. Labels and icons swap off the `.dark`
@@ -41,6 +42,7 @@ export function MobileNav() {
         <DropdownMenuItem className={ITEM} render={<Link href="/dashboard" />}>
           <LayoutDashboard />
           Dashboard
+          <NavSpinner />
         </DropdownMenuItem>
 
         <DropdownMenuItem

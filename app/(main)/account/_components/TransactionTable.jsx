@@ -396,7 +396,6 @@ export function TransactionTable({ transactions }) {
     // Before the refresh: the rows the user was standing in are about to go.
     regionRef.current?.focus();
     toast.success(`${result.count} transaction(s) deleted`);
-    router.refresh();
   };
 
   const emptyState = (

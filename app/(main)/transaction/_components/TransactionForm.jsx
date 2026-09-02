@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { CreateAccountDrawer } from "@/components/CreateAccountDrawer";
+import { setFlash } from "@/components/FlashToast";
 import { ReceiptScanner } from "./ReceiptScanner";
 
 // One map drives both the trigger label and the items, so they cannot drift.
@@ -134,6 +135,15 @@ export function TransactionForm({
 
   const { loading, fn: submitFn } = useFetch(
     editMode ? updateTransaction : createTransaction,
+    {
+      onSuccess: (transaction) => {
+        // Parked, not fired: the account page shows it once it is on screen,
+        // so the confirmation never flashes on the form the user is leaving.
+        setFlash(editMode ? "Transaction updated" : "Transaction created");
+        reset();
+        router.push(`/account/${transaction.accountId}`);
+      },
+    },
   );
 
   // useWatch, not watch(): watch() returns a function React Compiler cannot
@@ -180,15 +190,11 @@ export function TransactionForm({
 
   const onSubmit = async (values) => {
     // Amount stays a string all the way to Prisma. No parseFloat.
-    const transaction = editMode
-      ? await submitFn(initialData.id, values)
-      : await submitFn(values);
-
-    if (!transaction) return;
-
-    toast.success(editMode ? "Transaction updated" : "Transaction created");
-    reset();
-    router.push(`/account/${transaction.accountId}`);
+    if (editMode) {
+      await submitFn(initialData.id, values);
+    } else {
+      await submitFn(values);
+    }
   };
 
   // Errors on conditionally-rendered fields have nowhere to display, which
@@ -331,7 +337,6 @@ export function TransactionForm({
               nativeButton
               onCreated={(account) => {
                 setValue("accountId", account.id);
-                router.refresh();
               }}
             >
               <Button

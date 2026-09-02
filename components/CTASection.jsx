@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { formatCurrency } from "@/lib/format";
 import { Button } from "@/components/ui/button";
+import { NavSpinner } from "./NavSpinner";
 
 const LABEL =
   "text-label font-heading font-bold tracking-[.13em] uppercase text-muted-foreground";
@@ -28,6 +29,7 @@ const CTASection = () => {
           render={<Link href="/dashboard" />}
         >
           Create your account
+          <NavSpinner />
         </Button>
       </div>
     </section>

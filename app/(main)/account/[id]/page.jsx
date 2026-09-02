@@ -8,6 +8,7 @@ import { unwrap } from "@/lib/action";
 import { formatCurrency } from "@/lib/format";
 
 import { AccountActions } from "@/components/AccountActions";
+import { FlashToast } from "@/components/FlashToast";
 import { AccountActivity } from "../_components/AccountActivity";
 import { TransactionTable } from "../_components/TransactionTable";
 
@@ -31,6 +32,8 @@ export default async function AccountPage({ params }) {
 
   return (
     <div className="space-y-6 md:space-y-7">
+      <FlashToast />
+
       <header className="space-y-3">
         <Link
           href="/dashboard"

@@ -5,6 +5,7 @@ import { formatCurrency } from "@/lib/format";
 import { CountUp } from "@/components/CountUp";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { NavSpinner } from "./NavSpinner";
 
 // A drawn sample, not a real account. Static on purpose — and deliberately
 // undated: this page is prerendered, so a `new Date()` here would bake the
@@ -48,6 +49,7 @@ const HeroSection = () => {
             render={<Link href="/dashboard" />}
           >
             Start — it&apos;s free
+            <NavSpinner />
           </Button>
 
           <Button
